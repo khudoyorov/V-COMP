@@ -1,12 +1,12 @@
 package com.example.vcomp.repository;
 
-import com.example.vcomp.model.AddressModel;
+import com.example.vcomp.model.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface AddressRepository extends JpaRepository<AddressModel, Integer> {
-    List<AddressModel> findAllByUserId(Integer id);
+public interface AddressRepository extends JpaRepository<Address, Integer> {
+    List<Address> findAllByUserId(Integer id);
 }

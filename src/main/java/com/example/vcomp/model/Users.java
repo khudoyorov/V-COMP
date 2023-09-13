@@ -24,7 +24,7 @@ import java.util.Collections;
 @Table(name = "Users",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})}
 )
-public class UserModel implements UserDetails {
+public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

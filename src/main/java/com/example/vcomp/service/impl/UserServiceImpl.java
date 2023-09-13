@@ -4,7 +4,7 @@ import com.example.vcomp.configuration.JwtService;
 import com.example.vcomp.dto.LoginDto;
 import com.example.vcomp.dto.ResponseDto;
 import com.example.vcomp.dto.UserDto;
-import com.example.vcomp.model.UserModel;
+import com.example.vcomp.model.Users;
 import com.example.vcomp.repository.UserRepository;
 import com.example.vcomp.service.UserService;
 import com.example.vcomp.service.mapper.UserMapper;
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         try {
             if (userRepository.existsByEmailOrPhoneNumber(dto.getEmail(), dto.getPhoneNumber()))
                 return ResponseEntity.badRequest().body(ResponseDto.<String>builder().message("User with this phone number is already exists").build());
-            UserModel savedUser = userRepository.save(userMapper.toModel(dto));
+            Users savedUser = userRepository.save(userMapper.toModel(dto));
             return ResponseEntity.ok(
                     ResponseDto.<String>builder()
                             .message("OK")
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
             );
         }
         try {
-            Optional<UserModel> userModel = userRepository.findById(dto.getId());
+            Optional<Users> userModel = userRepository.findById(dto.getId());
 
             if (userModel.isEmpty()) {
                 return ResponseEntity.badRequest().body(
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
                                 .build()
                 );
             }
-            UserModel user = userModel.get();
+            Users user = userModel.get();
             if (!user.getName().equals(dto.getName()))
                 user.setName(dto.getName());
             if (!user.getPassword().equals(dto.getPassword()))
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
-            Optional<UserModel> userModel = userRepository.findById(id);
+            Optional<Users> userModel = userRepository.findById(id);
 
             if (userModel.isEmpty()) {
                 return ResponseEntity.badRequest().body(
@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<ResponseDto<UserDto>> getUserByPhoneNumber(String phoneNumber) {
         try {
-            Optional<UserModel> userModel = userRepository.findFirstByPhoneNumber(phoneNumber);
+            Optional<Users> userModel = userRepository.findFirstByPhoneNumber(phoneNumber);
             return userModel.map(model -> ResponseEntity.ok().body(
                     ResponseDto.<UserDto>builder()
                             .message("OK")
@@ -177,7 +177,7 @@ public class UserServiceImpl implements UserService {
             );
         }
         try {
-            Optional<UserModel> userModel = userRepository.findById(id);
+            Optional<Users> userModel = userRepository.findById(id);
 
             return userModel.map(model -> ResponseEntity.ok(
                     ResponseDto.<UserDto>builder()
@@ -201,7 +201,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<ResponseDto<String>> loginUser(LoginDto loginDto) {
-        UserModel user = loadUserByUsername(loginDto.getUsername());
+        Users user = loadUserByUsername(loginDto.getUsername());
         if (!encoder.matches(loginDto.getPassword(),user.getPassword())){
             return ResponseEntity.badRequest().body(
                     ResponseDto.<String>builder()
@@ -219,8 +219,8 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    private UserModel loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserModel> users = userRepository.findFirstByPhoneNumber(username);
+    private Users loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<Users> users = userRepository.findFirstByPhoneNumber(username);
         if (users.isEmpty()) throw new UsernameNotFoundException("User with phone number: " + username + " is not found");
         return users.get();
     }

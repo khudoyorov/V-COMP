@@ -2,7 +2,7 @@ package com.example.vcomp.service.impl;
 
 import com.example.vcomp.dto.AddressDto;
 import com.example.vcomp.dto.ResponseDto;
-import com.example.vcomp.model.AddressModel;
+import com.example.vcomp.model.Address;
 import com.example.vcomp.repository.AddressRepository;
 import com.example.vcomp.service.AddressService;
 import com.example.vcomp.service.mapper.AddressMapper;
@@ -23,7 +23,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public ResponseEntity<ResponseDto<AddressDto>> add(AddressDto addressDto) {
         try{
-            AddressModel address = addressMapper.toModel(addressDto);
+            Address address = addressMapper.toModel(addressDto);
             addressRepository.save(address);
 
             return ResponseEntity.ok().body(
@@ -52,7 +52,7 @@ public class AddressServiceImpl implements AddressService {
             );
         }
         try {
-            Optional<AddressModel> addressModel = addressRepository.findById(id);
+            Optional<Address> addressModel = addressRepository.findById(id);
 
             return addressModel.map(model -> ResponseEntity.ok(
                     ResponseDto.<AddressDto>builder()
@@ -108,7 +108,7 @@ public class AddressServiceImpl implements AddressService {
             );
         }
         try{
-            Optional<AddressModel> byId = addressRepository.findById(id);
+            Optional<Address> byId = addressRepository.findById(id);
 
             if (byId.isEmpty()){
                 return ResponseEntity.badRequest().body(

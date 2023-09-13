@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressModel {
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -20,5 +20,5 @@ public class AddressModel {
     private Double lat;
     private Double lon;
     @ManyToOne
-    private UserModel user;
+    private Users user;
 }
